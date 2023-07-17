@@ -83,3 +83,10 @@
     background-color: #f0f0f0;
 }
 
+
+/*  About */
+.about-card{
+    padding: 10px;
+    border: 4px dotted black;
+    margin-top: 2px;
+}

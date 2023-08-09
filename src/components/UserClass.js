@@ -15,6 +15,14 @@ class UserClass extends React.Component{
     componentDidMount(){
         console.log("Child DidMount called")
     }
+
+    componentDidUpdate(){
+        console.log("Will be called on each re-render")
+    }
+
+    componentWillUnmount(){
+        console.log("Will be called when component leaves the UI")
+    }
     render(){
         console.log("Child render called")
         return (

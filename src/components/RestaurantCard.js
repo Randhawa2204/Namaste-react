@@ -4,7 +4,7 @@ const RestaurantCard = (props) => {
   const { resData, error } = props;
 
   const { cloudinaryImageId, name, cuisines, avgRating, deliveryTime } =
-    resData?.data || {};
+    resData?.info || {};
   return (
     <>
       {error ? (

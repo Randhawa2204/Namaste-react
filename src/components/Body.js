@@ -1,38 +1,25 @@
 import RestaurantCard from "./RestaurantCard";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Shimmer from "./Shimmer";
 import { Link } from "react-router-dom";
+//Custom Hook
+import useRestaurantsList from "../utils/useRestaurantsList";
+import useOnlineStatus from "../utils/useOnlineStatus";
 
 const Body = () => {
-  //Local State Variable
-  const [listOfRestaurants, setListOfRestaurants] = useState([]);
-  const [listOfFilteredRestaurants, setListOfFilteredRestaurants] = useState(
-    []
-  );
+
   const [searchText, setSearchText] = useState("");
+  
+  const [listOfRestaurants , listOfFilteredRestaurants,setListOfRestaurants, setListOfFilteredRestaurants] = useRestaurantsList()
+  const status = useOnlineStatus()
+  
+  if(status === false){
+    return <h1>You're Offline. Please Check your internet connection.</h1>
+  }
   //console.log("Body Rendered")
 
-  useEffect(() => {
-    fetchData();
-  }, []);
 
-  const fetchData = async () => {
-    try {
-      const data = await fetch(
-        "https://www.swiggy.com/dapi/restaurants/list/v5?lat=22.8045665&lng=86.2028754&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING"
-      );
-      const jsonData = await data.json();
-
-      // setListOfRestaurants(jsonData?.data?.cards[2]?.data?.data?.cards);
-      // setListOfFilteredRestaurants(jsonData?.data?.cards[2]?.data?.data?.cards);
-      setListOfRestaurants(jsonData?.data?.cards[5]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
-      setListOfFilteredRestaurants(jsonData?.data?.cards[5]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
-      //console.log(listOfFilteredRestaurants)
-    } catch (err) {
-      setListOfFilteredRestaurants([{ error: true }]);
-    }
-  };
-
+  //console.log(typeof setListOfFilteredRestaurants)
   if (listOfRestaurants.length === 0) {
     return <Shimmer />;
   }

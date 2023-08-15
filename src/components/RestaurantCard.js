@@ -29,6 +29,19 @@ const RestaurantCard = (props) => {
   );
 };
 
+//HOC- Higher Order Component
+
+export const withIsOpenedLabel = (RestaurantCard) => {
+  return (props) => {
+    return (
+      <>
+        <label className="absolute text-white bg-black  p-2 rounded">Closed</label>
+        <RestaurantCard {...props} />
+      </>
+    )
+  }
+}
+
 export default RestaurantCard;
 
 // (<div className="res-card">

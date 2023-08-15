@@ -20,12 +20,13 @@ const useRestaurantsList = () => {
 
       // setListOfRestaurants(jsonData?.data?.cards[2]?.data?.data?.cards);
       // setListOfFilteredRestaurants(jsonData?.data?.cards[2]?.data?.data?.cards);
+      const dataArary = jsonData?.data?.cards.find(el => el.card.card.id === "restaurant_grid_listing")
       setListOfRestaurants(
-        jsonData?.data?.cards[5]?.card?.card?.gridElements?.infoWithStyle
+        dataArary.card?.card?.gridElements?.infoWithStyle
           ?.restaurants
       );
       setListOfFilteredRestaurants(
-        jsonData?.data?.cards[5]?.card?.card?.gridElements?.infoWithStyle
+        dataArary.card?.card?.gridElements?.infoWithStyle
           ?.restaurants
       );
     } catch (error) {

@@ -1,14 +1,18 @@
-import RestaurantCard from "./RestaurantCard";
-import { useState } from "react";
+import RestaurantCard, { withIsOpenedLabel } from "./RestaurantCard";
+import { useState , useContext} from "react";
 import Shimmer from "./Shimmer";
 import { Link } from "react-router-dom";
 //Custom Hook
 import useRestaurantsList from "../utils/useRestaurantsList";
 import useOnlineStatus from "../utils/useOnlineStatus";
 
+//Context
+import UserContext from "../utils/UserContext";
+
 const Body = () => {
   const [searchText, setSearchText] = useState("");
 
+  const {loggedInUser , setUserName} = useContext(UserContext)
   const [
     listOfRestaurants,
     listOfFilteredRestaurants,
@@ -16,6 +20,8 @@ const Body = () => {
     setListOfFilteredRestaurants,
   ] = useRestaurantsList();
   const status = useOnlineStatus();
+
+  const RestaurantCardOpened = withIsOpenedLabel(RestaurantCard);
 
   if (status === false) {
     return <h1>You're Offline. Please Check your internet connection.</h1>;
@@ -66,6 +72,10 @@ const Body = () => {
         >
           Top Restaurants
         </button>
+        <div className="ml-4">
+          <label>UserName : </label>
+          <input className="p-2  w- 54 border border-black" value={loggedInUser} onChange={(e) => setUserName(e.target.value)}></input>
+        </div>
       </div>
       <div className="flex flex-wrap">
         {listOfFilteredRestaurants.map((restaurant) => (
@@ -74,7 +84,11 @@ const Body = () => {
             key={restaurant?.info?.id}
             style={{ textDecoration: "none" }}
           >
-            <RestaurantCard resData={restaurant} error={restaurant?.error} />
+            {restaurant.info.isOpen ? (
+              <RestaurantCard resData={restaurant} error={restaurant?.error} />
+            ) : (
+              <RestaurantCardOpened resData={restaurant} />
+            )}
           </Link>
         ))}
       </div>

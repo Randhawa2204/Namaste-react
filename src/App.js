@@ -1,6 +1,9 @@
-import React, { Suspense, lazy } from "react";
+import React, { Suspense, lazy,  useState , useEffect } from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter , RouterProvider , Outlet } from "react-router-dom";
+
+//Context
+import UserContext from "./utils/UserContext";
 
 //Components
 import Header from "./components/Header";
@@ -14,11 +17,23 @@ import RestaurantItem from "./components/RestaurantItem";
 const Grocery = lazy(() => import('./components/Grocery'))
 
 const AppLayout = () => {
+  const [userName , setUserName] = useState()
+
+  useEffect(() => {
+    //It makes the APi call and get the user name
+    const data = {
+      name : "Charan"
+    }
+    setUserName(data.name)
+  },[])
+
   return (
-    <div className="app">
-      <Header />
-      <Outlet />
-    </div>
+    <UserContext.Provider value={{loggedInUser : userName , setUserName}}>
+      <div className="app">
+        <Header />
+        <Outlet />
+      </div>
+    </UserContext.Provider>
   );
 };
 

@@ -5,12 +5,18 @@ import useOnlineStatus from "../utils/useOnlineStatus";
 //Context
 import UserContext from "../utils/UserContext";
 
+//Selector
+import {useSelector} from 'react-redux'
+
 const Header = () => {
 
   const [loginValue , setLoginValue] = useState("Login")
   const status = useOnlineStatus()
 
   const {loggedInUser} = useContext(UserContext)
+
+  //Subscribing to the Store
+  const cartItems = useSelector((store) => store.cart.items)
   
   return (
     <div className="flex justify-between items-center shadow-lg mb-10">
@@ -24,7 +30,7 @@ const Header = () => {
           <li className="px-4 py-2 rounded hover:bg-gray-50"><Link to="/about">About Us</Link></li>
           <li className="px-4 py-2 rounded hover:bg-gray-50"><Link to="/contact">Contact Us</Link></li>
           <li className="px-4 py-2 rounded hover:bg-gray-50"><Link to="/grocery">Grocery</Link></li>
-          <li className="px-4 py-2 rounded hover:bg-gray-50">Cart</li>
+          <li className="px-4 py-2 rounded hover:bg-gray-50"><Link to="/cart">Cart ({cartItems.length} items)</Link></li>
           <button className="ml-8 bg-blue-400 hover:bg-blue-600 px-4 py-2 font-bold text-white rounded" onClick={() => {
             loginValue === "Login" ? setLoginValue("Logout") : setLoginValue("Login")
           }}>

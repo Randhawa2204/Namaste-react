@@ -1,9 +1,31 @@
 import { CLOUDNARY_IMG_URL } from "../utils/constants";
+import { useDispatch , useSelector } from "react-redux";
+import { addItem, removeItem } from "../utils/redux/slices/cartSlice";
+
 
 const ItemList = ({ items }) => {
+
+  const dispatch = useDispatch()
+  const cartItems = useSelector((store) => store.cart.items)
+
+
+  const handleAddItem = (item) => {
+    dispatch(addItem(item))
+  }
+
+
+  const filteredItem = items.filter((value , index ,self) => index === self.findIndex(el => el.card.info.id === value.card.info.id))
+  
+  
+  const handleRemoveItem = (id) => {
+    const index = cartItems.findIndex(el => el.card.info.id === id)
+    index !== -1 && dispatch(removeItem(index))
+  }
+
   return (
     <>
-      {items.map((item) => {
+      {
+      filteredItem.map((item) => {
         return (
           <div
             key={item.card.info.id}
@@ -32,9 +54,20 @@ const ItemList = ({ items }) => {
               </p>
             </div>
             <div className="w-2/12 relative">
-              <button className="bg-white text-green-400 border absolute px-6 py-2 rounded-md mt-24 ml-4 ">
-                Add +
-              </button>
+              {
+                cartItems.find((el) => el.card.info.id === item.card.info.id) ?
+                 <div className="bg-white text-green-400 border absolute px-2 py-2 rounded-md mt-24 ml-4">
+                    <button className="px-2" onClick={() => handleRemoveItem(item.card.info.id)}>-</button>
+                    <span className="px-2">{cartItems.filter(el => el.card.info.id === item.card.info.id).length}</span>
+                    <button className="px-2" onClick={() => handleAddItem(item)}>+</button>
+                 </div> 
+                 : 
+                 <button className="bg-white text-green-400 border absolute px-6 py-2 rounded-md mt-24 ml-4"
+                onClick={() => handleAddItem(item)}>
+                 Add +
+               </button>
+              }
+              
               <img
                 src={CLOUDNARY_IMG_URL + item.card.info.imageId}
                 className="rounded-xl h-28"
